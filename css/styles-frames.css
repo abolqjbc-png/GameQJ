@@ -1,0 +1,159 @@
+/* GameQJ — avatar-confined frames and premium player titles */
+.avatar-frame-scope {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    contain: paint;
+}
+.avatar-frame-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    overflow: hidden;
+    contain: paint;
+    border-radius: inherit;
+    pointer-events: none;
+}
+.avatar-frame-overlay *, .avatar-frame-overlay::before, .avatar-frame-overlay::after { pointer-events:none; }
+/* The imperial crown is a separate, non-interactive accent just above the avatar. */
+.avatar-frame-scope-imperial { position:relative; isolation:isolate; overflow:visible; contain:none; }
+.pf-crown-mark { position:absolute; z-index:3; top:-8px; left:50%; transform:translateX(-50%); color:#fff0bd; font-size:10px; line-height:8px; text-shadow:0 0 3px rgba(245,158,11,.6); pointer-events:none; animation:pf-crown-sparkle 4s ease-in-out infinite; }
+
+/* Frame 1: restrained cyan-violet edge; the image area stays completely clear. */
+@keyframes pf-neon-glow {
+    0%, 100% { opacity: .72; filter: drop-shadow(0 0 2px rgba(34,211,238,.20)); }
+    50% { opacity: .92; filter: drop-shadow(0 0 3px rgba(139,92,246,.28)); }
+}
+@keyframes pf-neon-sweep { to { background-position: 200% 50%; } }
+.frame-neon-edge {
+    border: 2px solid transparent;
+    background: linear-gradient(transparent, transparent) padding-box,
+      linear-gradient(120deg, rgba(34,211,238,.72), rgba(99,102,241,.72), rgba(168,85,247,.72), rgba(34,211,238,.72)) border-box;
+    animation: pf-neon-glow 4.8s ease-in-out infinite;
+}
+.frame-neon-edge::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 2px solid transparent;
+    border-radius: inherit;
+    padding: 2px;
+    background: linear-gradient(110deg, transparent 38%, rgba(255,255,255,.58) 50%, transparent 62%) 0 50% / 200% 100% no-repeat;
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+    animation: pf-neon-sweep 6s ease-in-out infinite;
+}
+
+/* Frame 2: ember ring only; no tinted fill over the avatar image. */
+@keyframes pf-ember-rise {
+    0% { transform: translateY(14px) scale(.55); opacity:0; }
+    18% { opacity:1; }
+    100% { transform: translateY(-18px) scale(1.15); opacity:0; }
+}
+@keyframes pf-flame-pulse {
+    0%,100% { box-shadow: inset 0 0 0 1px rgba(249,115,22,.35), 0 0 5px rgba(239,68,68,.32); }
+    50% { box-shadow: inset 0 0 0 2px rgba(251,146,60,.8), 0 0 11px rgba(249,115,22,.7); }
+}
+.frame-ember { border:1.5px solid rgba(251,146,60,.82); animation:pf-flame-pulse 2.7s ease-in-out infinite; }
+.frame-ember::before, .frame-ember::after {
+    content:''; position:absolute; bottom:2px; width:3px; height:7px; border-radius:50%;
+    background:radial-gradient(circle at 50% 20%, #fff7ae, #fb923c 58%, #ef4444);
+    filter:drop-shadow(0 0 5px #f97316); animation:pf-ember-rise 2.3s ease-in infinite;
+}
+.frame-ember::before { left:16%; }
+.frame-ember::after { right:17%; animation-delay:.8s; animation-duration:2.8s; }
+.pf-ember-particle { position:absolute; bottom:2px; width:3px; height:6px; border-radius:50%; background:#fde68a; filter:drop-shadow(0 0 5px #f97316); animation:pf-ember-rise 2.5s ease-in infinite; }
+
+/* Frame 3: restrained violet lightning/energy rim, not a page background. */
+@keyframes pf-void-pulse { 0%,100% { opacity:.62; box-shadow:inset 0 0 5px rgba(139,92,246,.25), 0 0 5px rgba(139,92,246,.3); } 50% { opacity:1; box-shadow:inset 0 0 10px rgba(139,92,246,.55), 0 0 10px rgba(56,189,248,.5); } }
+@keyframes pf-star-twinkle { 0%,100% { opacity:.25; transform:scale(.65); } 50% { opacity:1; transform:scale(1.2); } }
+.frame-void { border:1.5px solid rgba(167,139,250,.8); animation:pf-void-pulse 2.8s ease-in-out infinite; }
+.frame-void::before { content:''; position:absolute; inset:0; border-radius:inherit; background:conic-gradient(from 0deg, transparent 0 70%, rgba(139,92,246,.9) 82%, transparent 94%); -webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 4px),#000 calc(100% - 2px)); mask:radial-gradient(farthest-side,transparent calc(100% - 4px),#000 calc(100% - 2px)); animation:pf-neon-sweep 5s linear infinite; }
+.pf-void-star { position:absolute; width:3px; height:3px; border-radius:50%; background:#e0f2fe; box-shadow:0 0 7px 2px #a78bfa; animation:pf-star-twinkle 1.8s ease-in-out infinite; }
+.void-star-one { top:12%; right:18%; }.void-star-two { bottom:16%; left:18%; animation-delay:.9s; }
+
+/* Frame 4: a fine holographic rim with a highlight masked strictly to the border. */
+@keyframes pf-prism { to { filter:hue-rotate(360deg); } }
+@keyframes pf-diamond-glint { 0%,100% { opacity:.28; transform:scale(.8); } 50% { opacity:.72; transform:scale(1); } }
+.frame-prismatic {
+    border: 2px solid transparent;
+    background: linear-gradient(transparent,transparent) padding-box,
+      linear-gradient(110deg,rgba(244,114,182,.74),rgba(167,139,250,.74),rgba(56,189,248,.74),rgba(52,211,153,.74),rgba(244,114,182,.74)) border-box;
+    animation: pf-prism 18s linear infinite;
+}
+.frame-prismatic::before {
+    content:''; position:absolute; inset:0; border:2px solid transparent; border-radius:inherit; padding:2px;
+    background:linear-gradient(110deg,transparent 38%,rgba(255,255,255,.68) 50%,transparent 62%) 0 50% / 220% 100% no-repeat;
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0); -webkit-mask-composite:xor;
+    mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0); mask-composite:exclude;
+    pointer-events:none; animation:pf-prism-shine 6s ease-in-out infinite;
+}
+@keyframes pf-prism-shine { 0%,20% { background-position:0 50%; opacity:0; } 45% { opacity:.75; } 80%,100% { background-position:220% 50%; opacity:0; } }
+.pf-diamond-spark { position:absolute; width:2px; height:2px; border-radius:50%; background:rgba(255,255,255,.85); box-shadow:0 0 3px 1px rgba(167,139,250,.48); animation:pf-diamond-glint 3.2s ease-in-out infinite; pointer-events:none; }
+
+/* Frame 5: compact hacker HUD, clipped by the avatar scope. */
+@keyframes pf-scan { from { transform:translateY(-5px); } to { transform:translateY(100%); } }
+@keyframes pf-hud-blink { 0%,100% { opacity:.55; } 50% { opacity:1; } }
+.frame-cyber { border:1px solid rgba(52,211,153,.72); background:repeating-linear-gradient(0deg,transparent 0 5px,rgba(52,211,153,.08) 5px 6px); }
+.frame-cyber::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,#a7f3d0,transparent); box-shadow:0 0 7px #34d399; animation:pf-scan 2.6s linear infinite; }
+.frame-cyber-corner { position:absolute; width:10px; height:10px; border-color:#6ee7b7; border-style:solid; border-width:0; filter:drop-shadow(0 0 3px #10b981); animation:pf-hud-blink 2s ease-in-out infinite; }
+.cyber-tl { top:1px; left:1px; border-top-width:2px; border-left-width:2px; }.cyber-tr { top:1px; right:1px; border-top-width:2px; border-right-width:2px; animation-delay:.25s; }
+.cyber-bl { bottom:1px; left:1px; border-bottom-width:2px; border-left-width:2px; animation-delay:.5s; }.cyber-br { bottom:1px; right:1px; border-bottom-width:2px; border-right-width:2px; animation-delay:.75s; }
+.frame-cyber-scanline { position:absolute; inset:0; border-radius:inherit; }
+.pf-hud-badge { position:absolute; z-index:1; font:700 6px/1 ui-monospace,monospace; letter-spacing:.08em; color:#a7f3d0; background:rgba(6,78,59,.78); border:1px solid rgba(52,211,153,.55); padding:1px 2px; border-radius:2px; animation:pf-hud-blink 2.6s ease-in-out infinite; }
+
+/* Frame 6: gold crown rim and contained sparkle details. */
+@keyframes pf-gold-gleam { 0%,100% { opacity:0; filter:drop-shadow(0 0 0 rgba(245,158,11,0)); } 50% { opacity:.9; filter:drop-shadow(0 0 4px rgba(250,204,21,.28)); } }
+.frame-imperial {
+    border:2px solid transparent;
+    background:linear-gradient(transparent,transparent) padding-box,linear-gradient(120deg,rgba(180,112,24,.78),rgba(245,190,75,.88),rgba(255,241,190,.9),rgba(201,137,42,.78)) border-box;
+    animation:pf-gold-gleam 4.6s ease-in-out infinite;
+}
+.frame-imperial::before { content:''; position:absolute; inset:0; border-radius:inherit; border:1px solid rgba(255,224,145,.36); pointer-events:none; }
+.pf-gold-spark { display:none; pointer-events:none; }
+.gold-spark-one { top:30%; left:22%; }.gold-spark-two { bottom:24%; right:20%; animation-delay:1.5s; }
+
+/* Premium player title badges */
+.player-title-badge { position:relative; display:inline-flex; align-items:center; justify-content:center; min-height:22px; padding:3px 12px; border-radius:6px; font-weight:900; line-height:1.2; white-space:nowrap; isolation:isolate; overflow:hidden; }
+.title-shadow-hunter { color:#dbeafe; letter-spacing:.08em; border:1px solid rgba(125,211,252,.72); background:linear-gradient(110deg,rgba(15,23,42,.98),rgba(30,58,82,.96),rgba(15,23,42,.98)); box-shadow:inset 0 1px rgba(219,234,254,.2),0 2px 9px rgba(14,165,233,.22); clip-path:polygon(7px 0,100% 0,100% calc(100% - 7px),calc(100% - 7px) 100%,0 100%,0 7px); }
+.title-shadow-hunter::after { content:''; position:absolute; z-index:-1; inset:0; background:linear-gradient(105deg,transparent 28%,rgba(186,230,253,.45) 48%,transparent 64%); transform:translateX(-120%); animation:pf-title-scan 3.8s ease-in-out infinite; }
+@keyframes pf-title-scan { 55%,100% { transform:translateX(120%); } }
+.title-god-of-dice { color:#e2e8f0; border:1px solid rgba(203,213,225,.5); letter-spacing:.13em; font-weight:700; background:linear-gradient(115deg,rgba(71,85,105,.48),rgba(226,232,240,.12),rgba(71,85,105,.5)); box-shadow:0 0 12px rgba(203,213,225,.18),inset 0 0 12px rgba(226,232,240,.12); text-shadow:0 0 7px rgba(226,232,240,.85); backdrop-filter:blur(3px); animation:pf-ghost-pulse 3.6s ease-in-out infinite; }
+@keyframes pf-ghost-pulse { 0%,100% { opacity:.78; filter:blur(.15px); box-shadow:0 0 8px rgba(203,213,225,.12); } 50% { opacity:1; filter:blur(0); box-shadow:0 0 15px rgba(203,213,225,.36); } }
+.title-ruthless { color:#fcd985; letter-spacing:.07em; border:1px solid rgba(180,120,28,.75); background:linear-gradient(90deg,#17130c,#30200b 48%,#17130c); box-shadow:inset 0 1px rgba(255,220,130,.18),0 2px 8px rgba(0,0,0,.45); clip-path:polygon(0 0,calc(100% - 8px) 0,100% 50%,calc(100% - 8px) 100%,0 100%,6px 50%); }
+.title-ruthless::before { content:'››'; margin-inline-end:6px; color:#b7791f; letter-spacing:-.2em; font-size:10px; text-shadow:0 0 5px rgba(245,158,11,.7); }
+.title-veteran { color:#f2c58e; border:1px solid #9a6233; border-radius:4px; letter-spacing:.06em; background:linear-gradient(180deg,#6b4226,#382315 52%,#59351e); box-shadow:inset 0 1px rgba(255,232,190,.3),inset 0 -2px rgba(20,10,4,.45),0 2px 5px rgba(0,0,0,.4); text-shadow:0 1px 2px #2a1609; }
+.title-veteran::before,.title-veteran::after { content:''; position:absolute; top:3px; width:3px; height:3px; border-radius:50%; background:#d7a46d; box-shadow:0 0 2px #2b1609; }
+.title-veteran::before { left:4px; }.title-veteran::after { right:4px; }
+.title-grandmaster { color:#fff2b3; border:1px solid #e4b84f; border-radius:7px; padding-inline:15px; letter-spacing:.09em; background:linear-gradient(115deg,#6b3b09,#c48919 22%,#fff0a6 38%,#a9680d 53%,#f6d66e 72%,#70400b); background-size:220% 100%; box-shadow:inset 0 1px rgba(255,255,220,.65),inset 0 -2px rgba(88,48,3,.6),0 0 12px rgba(245,158,11,.28); text-shadow:0 1px 2px #633806,0 0 7px rgba(255,239,170,.6); animation:pf-foil-shine 4.5s linear infinite; }
+.title-grandmaster::before { content:'✦'; position:absolute; top:-7px; right:5px; z-index:1; color:#fff6c7; font-size:9px; text-shadow:0 0 7px #fbbf24; animation:pf-crown-sparkle 2.2s ease-in-out infinite; }
+.title-grandmaster::after { content:''; position:absolute; left:12%; right:12%; bottom:2px; height:1px; background:linear-gradient(90deg,transparent,#fff1a8,transparent); opacity:.8; }
+@keyframes pf-foil-shine { to { background-position:220% center; } }
+@keyframes pf-crown-sparkle { 0%,100% { opacity:.45; transform:scale(.75) rotate(-12deg); } 50% { opacity:1; transform:scale(1.2) rotate(12deg); } }
+
+@media (prefers-reduced-motion: reduce) {
+    .avatar-frame-overlay, .avatar-frame-overlay::before, .avatar-frame-overlay::after,
+    .avatar-frame-overlay *, .avatar-frame-overlay *::before, .avatar-frame-overlay *::after,
+    .player-title-badge, .player-title-badge::before, .player-title-badge::after { animation:none !important; }
+}
+
+
+/* Avatar frame animation layers: isolate paint and promote transform/opacity effects. */
+.avatar-frame-scope { transform: translateZ(0); backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.avatar-frame-overlay { transform: translateZ(0); backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.avatar-frame-overlay::before, .avatar-frame-overlay::after,
+.avatar-frame-overlay .pf-ember-particle,
+.avatar-frame-overlay .pf-void-star,
+.avatar-frame-overlay .pf-diamond-spark,
+.avatar-frame-overlay .frame-cyber-corner,
+.avatar-frame-overlay .pf-hud-badge {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    will-change: transform, opacity;
+}
+.avatar-frame-overlay .frame-neon-edge::before,
+.avatar-frame-overlay .frame-prismatic::before,
+.avatar-frame-overlay .frame-cyber::before { isolation: isolate; }

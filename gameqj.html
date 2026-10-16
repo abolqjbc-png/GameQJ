@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameQJ - بازی‌های آنلاین</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/styles-frames.css">
+    <script>
+    (function () {
+        try {
+            if (localStorage.getItem('gameqj_theme') === 'light') document.documentElement.classList.add('light-mode');
+        } catch (e) {}
+    })();
+    </script>
+</head>
+<body class="min-h-screen select-none font-sans">
+    <div id="root"><div class="gq-app-loading" role="status">در حال بارگذاری بازی…</div></div>
+    <script>
+    (function () {
+        var root = document.getElementById('root');
+        function fail(message) {
+            root.innerHTML = '';
+            var panel = document.createElement('div');
+            panel.className = 'gq-app-load-error';
+            panel.setAttribute('role', 'alert');
+            panel.textContent = message;
+            root.appendChild(panel);
+        }
+        function loadScript(urls) {
+            return new Promise(function (resolve, reject) {
+                var index = 0;
+                function attempt() {
+                    if (index >= urls.length) { reject(new Error('بارگذاری ناموفق: ' + urls.join(' یا '))); return; }
+                    var script = document.createElement('script');
+                    script.src = urls[index++];
+                    script.async = true;
+                    var timeout = setTimeout(function () { script.onerror(); }, 9000);
+                    script.onload = function () { clearTimeout(timeout); resolve(); };
+                    script.onerror = function () { clearTimeout(timeout); script.remove(); attempt(); };
+                    document.head.appendChild(script);
+                }
+                attempt();
+            });
+        }
+
+        loadScript(['https://cdn.tailwindcss.com'])
+            .then(function () { return loadScript(['config/tailwind.config.js']); })
+            .catch(function () {});
+
+        loadScript([
+            'https://unpkg.com/react@18/umd/react.production.min.js',
+            'https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js'
+        ])
+            .then(function () { return loadScript([
+                'https://unpkg.com/react-dom@18/umd/react-dom.production.min.js',
+                'https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js'
+            ]); })
+            .then(function () { return loadScript(['dist/gameqj.bundle.js?v=' + Date.now()]); })
+            .catch(function (error) {
+                fail('بازی بارگذاری نشد. اتصال اینترنت و اجرای سایت از پوشهٔ اصلی پروژه را بررسی کنید. ' + error.message);
+            });
+    })();
+    </script>
+</body>
+</html>
